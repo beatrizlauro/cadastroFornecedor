@@ -75,9 +75,5 @@ public class Pessoa {
                "Endereco: " + this.endereco + "\n" +
                "Telefone: " + this.telefone + "\n" + 
                "E-mail: "   + this.email;
-    }
-    
-    
-    
-    
+    } 
 }

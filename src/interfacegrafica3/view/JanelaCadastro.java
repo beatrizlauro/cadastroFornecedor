@@ -175,157 +175,110 @@ public class JanelaCadastro extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bntFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntFecharActionPerformed
-        // TODO add your handling code here:
         fecharJanela();
     }//GEN-LAST:event_bntFecharActionPerformed
 
     private void bntGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntGravarActionPerformed
-        /*        
-        //verificar o txtId se tem algum valor:
-        if(Integer.parseInt(txtId.getText()) > 0){
-            //atualizar registro
-            int id = Integer.parseInt(txtId.getText());
-            Pessoa pessoa = new Pessoa();
-            pessoa.setNome(txtNome.getText());
-            pessoa.setEndereco(txtEndereco.getText());
-            pessoa.setEmail(txtEmail.getText());
-            pessoa.setTelefone(txtTelefone.getText());
-            pessoa.setId(id);
-            //atualizar o registro da lista:
-            janelaPrincipal.lstPessoa.set(id-1, pessoa);
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Cadastro atualizado com sucesso!",
-                    "Tela de cadastro",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        }else {
 
-            //estou buscando na janela principal o valor
-            // do meu último ID:
-            int id = janelaPrincipal.ultimoId + 1;
-            Pessoa pessoa = new Pessoa();
-            pessoa.setNome(txtNome.getText());
-            pessoa.setEndereco(txtEndereco.getText());
-            pessoa.setEmail(txtEmail.getText());
-            pessoa.setTelefone(txtTelefone.getText());
-            pessoa.setId(id);
-            //enviar objeto 'pessoa' para o banco de dados lstPessoa
-            // na janela principal
-            janelaPrincipal.lstPessoa.add(pessoa);
-            //incrementar o id na janela principal:
-            janelaPrincipal.ultimoId += 1;
-            //Exibi mensagem de OK
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Cadastro efetuado com sucesso!",
-                    "Tela de cadastro",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        }*/
-        
-        if(Integer.parseInt(txtId.getText()) == 0){
-            //atualizar registro
-            int id = Integer.parseInt(txtId.getText());
-            Pessoa pessoa = new Pessoa();
-            pessoa.setNome(txtNome.getText());
-            pessoa.setEndereco(txtEndereco.getText());
-            pessoa.setEmail(txtEmail.getText());
-            pessoa.setTelefone(txtTelefone.getText());
-            pessoa.setId(id);
-            //inserir pessoa no banco de dados:
+       int id = Integer.parseInt(txtId.getText());
+       Pessoa pessoa = new Pessoa();
+       pessoa.setNome(txtNome.getText());
+       pessoa.setEndereco(txtEndereco.getText());
+       pessoa.setTelefone(txtTelefone.getText());
+       pessoa.setEmail(txtEmail.getText());
+       pessoa.setId(id);
+       String mensagem;
             
-            PessoaRepository pessoaRepository = new PessoaRepository(pessoa);
-            pessoaRepository.inserir(janelaPrincipal.conexaoMySQL.connection);
-            
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Cadastro atualizado com sucesso!",
-                    "Tela de cadastro",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+        PessoaRepository pessoaRepository = new PessoaRepository();
+        boolean retornoBanco = false;
+        if (Integer.parseInt(txtId.getText()) == 0) {
+           retornoBanco =  pessoaRepository.inserir(janelaPrincipal.conexaoMySQL.connection, pessoa);
+           mensagem = "Cadastro inserido com sucesso!";
+        } else {
+           retornoBanco =  pessoaRepository.atualizar(janelaPrincipal.conexaoMySQL.connection, pessoa);
+           mensagem = "Cadastro atualizado com sucesso!";
+        } 
+
+        if(retornoBanco) {
+           JOptionPane.showMessageDialog(
+              this,
+                  mensagem,
+                  "Tela de Cadastro",
+                  JOptionPane.INFORMATION_MESSAGE
+          );
+            limparJanela();
         }
-        
-        //limpar a janela
-        limparJanela();
-        /*
-        //fecho a janela de cadastro
-        fecharJanela();*/
+            
         
     }//GEN-LAST:event_bntGravarActionPerformed
 
     private void btnAvancarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAvancarActionPerformed
-        // TODO add your handling code here:
+       
         int i = 0;
-        boolean sair = false;
         limparJanela();
-        while(i < janelaPrincipal.lstPessoa.size() && !sair){
-            Pessoa pessoa = janelaPrincipal.lstPessoa.get(i);
-            if(pessoa.getId() > Integer.parseInt(txtId.getText())){
-                //jogar os dados da pessoa na tela:
-                txtNome.setText(pessoa.getNome());
+        
+        PessoaRepository pessoaRepository = new PessoaRepository();
+        Pessoa pessoa = pessoaRepository.selecionar(janelaPrincipal.conexaoMySQL.connection, ">", Integer.parseInt(txtId.getText()));
+        
+        if (pessoa != null) {
+           txtNome.setText(pessoa.getNome());
                 txtEmail.setText(pessoa.getEmail());
                 txtEndereco.setText(pessoa.getEndereco());
                 txtTelefone.setText(pessoa.getTelefone());
                 txtId.setText(String.valueOf(pessoa.getId()));
-                sair = true;
-            }            
-            i++;
-        }
-        if(!sair){
-            limparJanela();
-            txtId.setText("0");
+        } else {
+          limparJanela();
+          txtId.setText("0");
         }
     }//GEN-LAST:event_btnAvancarActionPerformed
 
     private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
-        // TODO add your handling code here:
-        int i = janelaPrincipal.lstPessoa.size() -1;
-        boolean sair = false;
-        limparJanela();
-        while(i >= 0 && !sair){
-            Pessoa pessoa = janelaPrincipal.lstPessoa.get(i);
-            if(pessoa.getId() < Integer.parseInt(txtId.getText())){
-                //jogar os dados da pessoa na tela:
-                txtNome.setText(pessoa.getNome());
+         limparJanela();
+        
+        PessoaRepository pessoaRepository = new PessoaRepository();
+        Pessoa pessoa = pessoaRepository.selecionar(janelaPrincipal.conexaoMySQL.connection, "<", Integer.parseInt(txtId.getText()));
+        
+        if (pessoa != null) {
+           txtNome.setText(pessoa.getNome());
                 txtEmail.setText(pessoa.getEmail());
                 txtEndereco.setText(pessoa.getEndereco());
                 txtTelefone.setText(pessoa.getTelefone());
                 txtId.setText(String.valueOf(pessoa.getId()));
-                sair = true;
-            }            
-            i--;
-        }
-        if(!sair){
-            limparJanela();
-            txtId.setText("0");
+        } else {
+          limparJanela();
+          txtId.setText("0");
         }
     }//GEN-LAST:event_btnRetrocederActionPerformed
 
     private void bntDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntDeletarActionPerformed
-        // TODO add your handling code here:
-        if(Integer.parseInt(txtId.getText()) > 0){
+         if(Integer.parseInt(txtId.getText()) > 0) {
             int resposta = JOptionPane.showConfirmDialog(
-                    this,
-                    "Deseja realmente excluir esse registro?",
-                    "Excluir?",
-                    JOptionPane.YES_NO_OPTION
-            );
-            if(resposta == JOptionPane.YES_OPTION){
-                //excluir registro:
+               this,
+                     "Deseja realmente excluir esse registro?",
+                      "Excluir",
+                  JOptionPane.YES_NO_OPTION
+             );
+            
+            if (resposta == JOptionPane.YES_OPTION) {
                 int id = Integer.parseInt(txtId.getText());
-                janelaPrincipal.lstPessoa.remove(id-1);
-                janelaPrincipal.ultimoId -=1;
-                limparJanela();
-                txtId.setText("0");
-                atualizaIdLista();
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Registro excluído com sucesso!",
-                        "Tela de cadastro",
-                        JOptionPane.INFORMATION_MESSAGE
+                Pessoa pessoa = new Pessoa();
+                pessoa.setId(id);
+                PessoaRepository pessoaRepository = new PessoaRepository();
+                boolean retornoBanco = pessoaRepository.deletar(
+                  janelaPrincipal.conexaoMySQL.connection,
+                        pessoa
                 );
-            }            
+                if (retornoBanco) {
+                    limparJanela();
+                    txtId.setText("0");
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Registro excluído com sucesso!",
+                            "Tela de cadastro",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                }
+            }
         }
     }//GEN-LAST:event_bntDeletarActionPerformed
     
@@ -364,14 +317,4 @@ public class JanelaCadastro extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
-
-    private void atualizaIdLista() {
-        int id = 0;
-        for(int i = 0; i < janelaPrincipal.lstPessoa.size(); i++){
-            id = i+1;
-            Pessoa pessoa = janelaPrincipal.lstPessoa.get(i);
-            pessoa.setId(id);
-            janelaPrincipal.lstPessoa.set(i, pessoa);
-        }
-    }
 }

@@ -45,6 +45,4 @@ public class PessoaFisica extends Pessoa {
                 ", cpf="          + cpf                 + 
                 ", dtNascimento=" + dtNascimento        + '}';
     }
-    
-    
 }

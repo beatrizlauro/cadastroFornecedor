@@ -45,7 +45,7 @@ public class ConexaoMySQL {
                         JOptionPane.ERROR_MESSAGE
                 ); 
                 return false;
-            } //catch
+            }
         }else{
             return false;
         }

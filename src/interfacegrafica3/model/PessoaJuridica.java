@@ -57,7 +57,4 @@ public class PessoaJuridica extends Pessoa {
                 ", inscricaoEstadual=" + inscricaoEstadual   + 
                 ", nomeFantasia="      + nomeFantasia        + '}';
     }
-    
-    
-    
 }
