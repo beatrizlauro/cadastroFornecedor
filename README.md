@@ -1,11 +1,13 @@
 # Criação de Tela de Cadastro de Fornecedor
 
 ## Integrantes do Grupo:
+
 - Ana Flávia Alves Rosa  
 - Beatriz da Costa Lauro  
 - Brenda Bonaita de Oliveira  
 - Juliana Aparecida Silva Reis  
-- Leticia Gomes dos Santos  
+- Leticia Gomes dos Santos
+- Vitoria Aparecida Alves Rezende  
 
 ---
 
@@ -23,6 +25,7 @@ Nossa aplicação **InterfaceGrafica3** possui alguns cadastros já implementado
 ---
 
 ### Campos para o Banco de Dados:
+
 - **id**
 - **nome**
 - **email**
@@ -37,13 +40,12 @@ Nossa aplicação **InterfaceGrafica3** possui alguns cadastros já implementado
 ---
 
 ### Repositório
+
 Criar a classe **FornecedorRepository** no pacote `repository` para realizar os comandos de banco de dados.
 
 ---
 
 ### Ajustes na Tela de Cadastro
+
 - Implementar a tela para o cadastro de fornecedor.  
 - Utilizar um componente **JComboBox** para o campo de UF.  
-=======
-# cadastroFornecedor
- Trabalho para a disciplina de Programação I, do 4° período do curso de Sistemas de Informação.
