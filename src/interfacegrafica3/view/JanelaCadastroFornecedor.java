@@ -11,7 +11,7 @@ package interfacegrafica3.view;
 public class JanelaCadastroFornecedor extends javax.swing.JInternalFrame {
 
     private static JanelaCadastroFornecedor instancia;
-    private JanelaPrincipal janelaPrincipal;
+    private final JanelaPrincipal janelaPrincipal;
     
      /**
      * Creates new form JanelaCadastroFornecedor
@@ -28,6 +28,11 @@ public class JanelaCadastroFornecedor extends javax.swing.JInternalFrame {
           instancia = new JanelaCadastroFornecedor(janelaPrincipal);
       return instancia;
     }
+    
+    private void fecharJanela(){
+        instancia = null;
+        dispose();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,10 +44,17 @@ public class JanelaCadastroFornecedor extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         txtId = new javax.swing.JTextField();
+        btnFechar = new javax.swing.JButton();
 
-        setClosable(true);
         setTitle("Cadastro de Fornecedor");
         setVisible(true);
+
+        btnFechar.setText("Fechar");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -51,21 +63,33 @@ public class JanelaCadastroFornecedor extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(460, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 363, Short.MAX_VALUE)
+                .addComponent(btnFechar)
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(254, Short.MAX_VALUE)
-                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(241, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnFechar)
+                        .addGap(18, 18, 18))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+       fecharJanela();
+    }//GEN-LAST:event_btnFecharActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFechar;
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
 }
