@@ -1,30 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package interfacegrafica3.repository;
 
 import interfacegrafica3.model.Fornecedor;
 import interfacegrafica3.model.Pessoa;
+import interfacegrafica3.model.Uf;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javax.swing.JOptionPane;
 
-/**
- *
- * @author Bia
- */
-public class FornecedorRepository implements Crud<Fornecedor>{
-    
-    //Crud - inserir
+public class FornecedorRepository implements Crud<Fornecedor> {
+
+    // Crud - Inserir
     @Override
     public boolean inserir(Connection connection, Fornecedor fornecedor) {
-        PreparedStatement stmt = null;
-        try{
-            String comando = "INSERT INTO fornecedor(cnpj, inscricaoEstadual, nomeFantasia, nome, email, endereco, telefone, id, uf, categoria) " +
-                             "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            stmt = connection.prepareStatement(comando);
+        String comando = "INSERT INTO fornecedor(cnpj, inscricaoEstadual, nomeFantasia, nome, email, endereco, telefone, id, uf, categoria) " +
+                         "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(comando)) {
             stmt.setString(1, fornecedor.getCnpj());
             stmt.setString(2, fornecedor.getInscricaoEstadual());
             stmt.setString(3, fornecedor.getNomeFantasia());
@@ -33,35 +23,24 @@ public class FornecedorRepository implements Crud<Fornecedor>{
             stmt.setString(6, fornecedor.getEndereco());
             stmt.setString(7, fornecedor.getTelefone());
             stmt.setInt(8, fornecedor.getId());
-            stmt.setInt(9, fornecedor.getUf().getId());
+            stmt.setInt(9, fornecedor.getUf() != null ? fornecedor.getUf().getId() : null);
             stmt.setString(10, fornecedor.getCategoria());
-            
+
             stmt.executeUpdate();
-            stmt.close();
-            
             return true;
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Erro ao inserir pessoa: " + ex.getMessage(),
-                    "Erro ao inserir",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Erro ao inserir fornecedor: " + ex.getMessage());
+            return false;
         }
-        return false;
     }
 
-    //Crud - atualizar
+    // Crud - Atualizar
     @Override
     public boolean atualizar(Connection connection, Fornecedor fornecedor) {
-        PreparedStatement stmt = null;
-        try{
-            String comando = "UPDATE fornecedor SET " +
-                            "cnpj = ?, inscricaoEstadual = ?, nomeFantasia = ?, nome = ?, email = ?, endereco = ?, telefone = ?, "
-                            + "id = ?, uf = ?, categoria = ?" + 
-                            "WHERE id = ?";
-            stmt = connection.prepareStatement(comando);
+        String comando = "UPDATE fornecedor SET " +
+                         "cnpj = ?, inscricaoEstadual = ?, nomeFantasia = ?, nome = ?, email = ?, endereco = ?, telefone = ?, uf = ?, categoria = ? " +
+                         "WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(comando)) {
             stmt.setString(1, fornecedor.getCnpj());
             stmt.setString(2, fornecedor.getInscricaoEstadual());
             stmt.setString(3, fornecedor.getNomeFantasia());
@@ -69,83 +48,62 @@ public class FornecedorRepository implements Crud<Fornecedor>{
             stmt.setString(5, fornecedor.getEmail());
             stmt.setString(6, fornecedor.getEndereco());
             stmt.setString(7, fornecedor.getTelefone());
-            stmt.setInt(8, fornecedor.getId());
-            stmt.setInt(9, fornecedor.getUf().getId());
-            stmt.setString(10, fornecedor.getCategoria());
-            
+            stmt.setInt(8, fornecedor.getUf() != null ? fornecedor.getUf().getId() : null);
+            stmt.setString(9, fornecedor.getCategoria());
+            stmt.setInt(10, fornecedor.getId());
+
             stmt.executeUpdate();
-            stmt.close();
-            
             return true;
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Erro ao atualizar pessoa: " + ex.getMessage(),
-                    "Erro ao atualizar",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Erro ao atualizar fornecedor: " + ex.getMessage());
+            return false;
         }
-        return false;
     }
 
-    //Crud - deletar
+    // Crud - Deletar
     @Override
-    public boolean deletar(Connection connection, Pessoa pessoa) {
-        PreparedStatement stmt = null;
-        try{
-            String comando = "DELETE FROM fornecedor " +
-                            "WHERE id = ?";
-            stmt = connection.prepareStatement(comando);
+    public boolean deletar(Connection connection, Fornecedor fornecedor) {
+        String comando = "DELETE FROM fornecedor WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(comando)) {
             stmt.setInt(1, fornecedor.getId());
-            
             stmt.executeUpdate();
-            stmt.close();
-            
             return true;
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Erro ao excluir pessoa: " + ex.getMessage(),
-                    "Erro ao excluir",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Erro ao excluir fornecedor: " + ex.getMessage());
+            return false;
         }
-        return false;
     }
-    
+
+    // Crud - Selecionar
     @Override
     public Fornecedor selecionar(Connection connection, String operador, int id) {
-        try {
-            Fornecedor fornecedor = new Fornecedor();
-            PreparedStatement  stmt = null;
-            String comando = "SELECT * FROM fornecedor WHERE id" + 
-                    operador + " ? ";
-            
-            if (operador.equals("<"))
-                comando += " ORDER BY id DESC";
-            
-            stmt = connection.prepareStatement(comando);
-            stmt.setInt(1,id);
-            
+        String comando = "SELECT * FROM fornecedor WHERE id " + operador + " ?";
+        if (operador.equals("<")) {
+            comando += " ORDER BY id DESC";
+        }
+        
+        try (PreparedStatement stmt = connection.prepareStatement(comando)) {
+            stmt.setInt(1, id);
             ResultSet res = stmt.executeQuery();
-            
-            if(res != null) {
-                while(res.next()){
-                    fornecedor.setId(Integer.parseInt(res.getString("id")));
-                    fornecedor.setNome(res.getString("nome"));
-                    fornecedor.setEndereco(res.getString("endereco"));
-                    fornecedor.setTelefone(res.getString("telefone"));
-                    fornecedor.setEmail(res.getString("email"));
-                    
-                    break;
-                }
+
+            if (res.next()) {
+                Fornecedor fornecedor = new Fornecedor(
+                    res.getString("cnpj"),
+                    res.getString("inscricaoEstadual"),
+                    res.getString("nomeFantasia"),
+                    res.getString("nome"),
+                    res.getString("email"),
+                    res.getString("endereco"),
+                    res.getString("telefone"),
+                    res.getInt("id"),
+                    res.getObject("uf") != null ? new Uf(res.getInt("uf")) : null,
+                    res.getString("categoria")
+                );
+                return fornecedor;
             }
-            return fornecedor;
-            
-        } catch (Exception e) {
-            return null;
-        } 
+        } catch (Exception ex) {
+            System.out.println("Erro ao selecionar fornecedor: " + ex.getMessage());
+        }
+        return null;
     }
 }
