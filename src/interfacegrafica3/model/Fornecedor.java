@@ -9,20 +9,20 @@ package interfacegrafica3.model;
  * @author leleb
  */
 public class Fornecedor extends PessoaJuridica {
-    private Uf uf;
+    private int uf;
     private String categoria;
     
-    public Fornecedor(String cnpj, String inscricaoEstadual, String nomeFantasia, String nome, String email, String endereco, String telefone, int id, Uf uf, String categoria) {
+    public Fornecedor(String cnpj, String inscricaoEstadual, String nomeFantasia, String nome, String email, String endereco, String telefone, int id, int uf, String categoria) {
         super(cnpj, inscricaoEstadual, nomeFantasia, nome, email, endereco, telefone, id);
         this.uf = uf;
         this.categoria = categoria;
     }
 
-    public Uf getUf() {
+    public int getUf() {
         return uf;
     }
 
-    public void setUf(Uf uf) {
+    public void setUf(int uf) {
         this.uf = uf;
     }
 

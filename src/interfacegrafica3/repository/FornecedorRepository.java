@@ -1,8 +1,6 @@
 package interfacegrafica3.repository;
 
 import interfacegrafica3.model.Fornecedor;
-import interfacegrafica3.model.Pessoa;
-import interfacegrafica3.model.Uf;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +21,7 @@ public class FornecedorRepository implements Crud<Fornecedor> {
             stmt.setString(6, fornecedor.getEndereco());
             stmt.setString(7, fornecedor.getTelefone());
             stmt.setInt(8, fornecedor.getId());
-            stmt.setInt(9, fornecedor.getUf() != null ? fornecedor.getUf().getId() : null);
+            stmt.setInt(9, fornecedor.getUf());
             stmt.setString(10, fornecedor.getCategoria());
 
             stmt.executeUpdate();
@@ -48,7 +46,7 @@ public class FornecedorRepository implements Crud<Fornecedor> {
             stmt.setString(5, fornecedor.getEmail());
             stmt.setString(6, fornecedor.getEndereco());
             stmt.setString(7, fornecedor.getTelefone());
-            stmt.setInt(8, fornecedor.getUf() != null ? fornecedor.getUf().getId() : null);
+            stmt.setInt(8, fornecedor.getUf());
             stmt.setString(9, fornecedor.getCategoria());
             stmt.setInt(10, fornecedor.getId());
 
@@ -96,7 +94,7 @@ public class FornecedorRepository implements Crud<Fornecedor> {
                     res.getString("endereco"),
                     res.getString("telefone"),
                     res.getInt("id"),
-                    res.getObject("uf") != null ? new Uf(res.getInt("uf")) : null,
+                    res.getInt("uf"),
                     res.getString("categoria")
                 );
                 return fornecedor;
