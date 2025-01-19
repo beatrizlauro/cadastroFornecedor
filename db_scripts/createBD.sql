@@ -16,7 +16,7 @@ CREATE TABLE `cadastro`.`cadastro_pessoa` (
   `sigla`    VARCHAR(2)   NOT NULL                COMMENT '',
   PRIMARY KEY (`id`)                              COMMENT '');
   
-  	CREATE TABLE `cadastro`.`fornecedor` (
+	CREATE TABLE `cadastro`.`fornecedor` (
   `id`                   INT          NOT NULL AUTO_INCREMENT COMMENT '',
   `cnpj`                 VARCHAR(14)  NOT NULL                COMMENT '',
   `inscricaoEstadual`    VARCHAR(9)   NOT NULL                COMMENT '',
@@ -30,6 +30,7 @@ CREATE TABLE `cadastro`.`cadastro_pessoa` (
   PRIMARY KEY (`id`), 
   CONSTRAINT `fk_uf` FOREIGN KEY (`uf`) REFERENCES `cadastro`.`uf`(`id`)  -- Definindo a chave estrangeira
 );
+
   
 /*visualizar todos os dados contidos na tabela uf*/
 select * from uf;
